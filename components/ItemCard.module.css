@@ -1,0 +1,88 @@
+.card {
+  /* Layout & Sizing */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+  /* Appearance */
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-decoration: none; /* Removes underline from Link */
+  color: inherit;       /* Removes blue color from Link */
+  overflow: hidden;     /* Keeps image corners rounded */
+  
+  /* Interaction */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* --- This is the image "rescaling" magic --- */
+.imageWrapper {
+  position: relative; /* Required for 'fill' on next/image */
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Forces a 16:9 shape (widescreen) */
+  /* You could use '1 / 1' for a perfect square */
+  background-color: #f0f0f0; /* Fallback color while image loads */
+}
+
+.imageWrapper {
+  position: relative; /* Required for 'fill' on next/image */
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Forces a 4:3 shape (more vertical) */
+  /* You could also use '1 / 1' for a perfect square */
+  /* Or '3 / 4' for a tall portrait shape */
+  background-color: #f0f0f0; /* Fallback color while image loads */
+}
+
+.image {
+  object-fit: cover; /* This is the key! */
+  /* It zooms/crops the image to fill the space, but never stretches it. */
+}
+/* --- End of magic --- */
+
+.content {
+  padding: 1.25rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0; /* top right bottom left */
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 1rem;
+  /* Truncate to 2 lines for a clean look */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.7rem; /* (2 * line-height) - adjust as needed */
+}
+
+.priceContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-top: auto; /* Pushes price to the bottom */
+}
+
+.price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.originalPrice {
+  font-size: 1rem;
+  color: #999;
+  /* 'del' tag already provides strikethrough */
+}

@@ -1,0 +1,42 @@
+/* app/components/CreateItemButton.module.css */
+
+.createButton {
+  /* Box Model & Sizing */
+  display: inline-flex; /* Use flex to align icon and text */
+  align-items: center;
+  gap: 0.5rem; /* Space between the "+" and "New Item" */
+  padding: 0.7rem 1.25rem; /* Vertical and horizontal padding */
+  
+  /* Text & Font */
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none; /* Remove the default link underline */
+
+  /* Appearance */
+  background-color: #0070f3; /* A nice, modern blue */
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 118, 255, 0.25); /* Subtle glow */
+
+  /* Animation */
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.createButton:hover {
+  background-color: #005bb5; /* A darker blue for hover */
+  transform: translateY(-1px); /* Slight lift effect */
+  box-shadow: 0 6px 16px rgba(0, 118, 255, 0.3);
+}
+
+.createButton:active {
+  transform: translateY(0); /* "Press" effect */
+  background-color: #004c99;
+}
+
+/* Styles the "+" icon text */
+.createButton span {
+  font-size: 1.2rem;
+  line-height: 1;
+}

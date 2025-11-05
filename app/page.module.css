@@ -1,0 +1,85 @@
+.grid {
+  display: grid;
+  /* Creates a responsive grid:
+     - 1 column on small screens
+     - 2 columns on medium screens
+     - 3 columns on large screens
+  */
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* On screens 640px wide or more, use 2 columns */
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* On screens 1024px wide or more, use 3 columns */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ... (your .grid styles) ... */
+
+.paginationControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.paginationControls button {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.paginationControls button:hover {
+  background-color: #0056b3;
+}
+
+.paginationControls button:disabled {
+  background-color: #c0c0c0;
+  cursor: not-allowed;
+}
+
+/* ... (your existing .grid and .paginationControls styles) ... */
+
+.statusMessage {
+  padding: 1rem;
+  border-radius: 6px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  margin-bottom: 1rem;
+}
+
+.title {
+  /* Centering */
+  text-align: center;
+  
+  /* "Cool" Size & Font */
+  font-size: 1.8rem;  /* A large, "hero" size */
+  font-weight: 700;   /* Strong, but not overly thick */
+  color: #222;       /* A softer, modern dark gray instead of pure black */
+  letter-spacing: -0.02em; /* A common trick to make fonts look cleaner */
+
+  /* Spacing */
+  margin-bottom: 2rem; /* Adds space between the title and the content below it */
+}
+
+/* Optional: Make it a bit smaller on mobile */
+@media (max-width: 640px) {
+  .title {
+    font-size: 2.2rem;
+  }
+}

@@ -1,0 +1,115 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.clientsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+.clientsTable th,
+.clientsTable td {
+  border-bottom: 1px solid #eaeaea;
+  padding: 1rem;
+  text-align: left;
+}
+
+.clientsTable th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttonEdit,
+.buttonDelete {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.buttonEdit {
+  background-color: #0070f3;
+  color: white;
+}
+.buttonEdit:hover {
+  background-color: #0056b3;
+}
+
+.buttonDelete {
+  background-color: #e00;
+  color: white;
+}
+.buttonDelete:hover {
+  background-color: #a00;
+}
+
+.statusMessage {
+  padding: 1rem;
+  border-radius: 6px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  margin-bottom: 1rem;
+}
+
+/* ... (your existing styles for .container, .clientsTable, .buttonEdit, etc.) ... */
+
+.paginationControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.paginationControls button {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.paginationControls button:hover {
+  background-color: #0056b3;
+}
+
+.paginationControls button:disabled {
+  background-color: #c0c0c0;
+  cursor: not-allowed;
+}
+
+.title {
+  /* Centering */
+  text-align: center;
+  
+  /* "Cool" Size & Font */
+  font-size: 1.8rem;  /* A large, "hero" size */
+  font-weight: 700;   /* Strong, but not overly thick */
+  color: #222;       /* A softer, modern dark gray instead of pure black */
+  letter-spacing: -0.02em; /* A common trick to make fonts look cleaner */
+
+  /* Spacing */
+  margin-bottom: 2rem; /* Adds space between the title and the content below it */
+}
+
+/* Optional: Make it a bit smaller on mobile */
+@media (max-width: 640px) {
+  .title {
+    font-size: 2.2rem;
+  }
+}
