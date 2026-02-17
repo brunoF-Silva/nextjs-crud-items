@@ -59,7 +59,7 @@ export default function CreateItemPage() {
       const newItem = await response.json();
       console.log('Item created successfully:', newItem);
       alert('Item created successfully!');
-      router.push('/items'); // Redirect to the items list page
+      router.push('/'); // Redirect to the items list page
     
     } catch (err: any) {
       console.error(err);
