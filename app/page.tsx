@@ -20,20 +20,10 @@ export default function ItemPage() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [statusMessage, setStatusMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState("");
 
   // Get the search params
   const searchParams = useSearchParams();
-
-  // useEffect to check for the status message (e.g., ?status=deleted)
-  useEffect(() => {
-    const status = searchParams.get('status');
-    if (status === 'deleted') {
-      setStatusMessage('Item deleted successfully!');
-      // Optional: clear the message
-      setTimeout(() => setStatusMessage(''), 3000);
-    }
-  }, [searchParams]);
 
   // Main useEffect for fetching items based on page
   useEffect(() => {
@@ -43,16 +33,20 @@ export default function ItemPage() {
         const response = await fetch(
           `http://localhost:4000/items?page=${currentPage}`,
         );
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
         const data = await response.json();
-        setItems(data.data);
-        setTotalPages(data.totalPages);
+        console.log("API Response:", data); // Debug: see what the API returns
+        setItems(data.data || data || []);
+        setTotalPages(data.totalPages || 0);
       } catch (error) {
-        console.error('Falha ao buscar itens:', error);
+        console.error("Falha ao buscar itens:", error);
+        setItems([]); // Ensure items is always an array
       } finally {
         setLoading(false);
       }
     }
-
     fetchItems();
   }, [currentPage]); // Re-run when 'currentPage' changes
 
@@ -71,7 +65,7 @@ export default function ItemPage() {
 
   return (
     <div>
-    <h2 className={styles.title}>Avaliable Items</h2>
+      <h2 className={styles.title}>Avaliable Items</h2>
       {/* 2. Added the status message display here */}
       {statusMessage && (
         <div className={styles.statusMessage}>{statusMessage}</div>
