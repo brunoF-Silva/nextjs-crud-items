@@ -70,7 +70,23 @@ export default function CreateItemPage() {
   return (
     <div className={styles.pageContainer}>
       <h1 className={styles.title}>Create a New Item</h1>
-      
+
+      <div className={styles.instruction} role="note" aria-live="polite">
+        <strong>Please use free images from </strong>
+        <a
+          href="https://unsplash.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Unsplash
+        </a>
+        <strong> only.</strong>
+        <div>
+          For the best results, open the image on Unsplash and copy its image
+          address (right-click the image → "Copy image address").
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className={styles.form}>
         
         {/* Show an error message if the API request fails */}

@@ -4,13 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
       domains: [
-        'images3.kabum.com.br',
-        'images7.kabum.com.br',
-        'images4.kabum.com.br',
-        'images0.kabum.com.br',
-        'images9.kabum.com.br',
-        'images2.kabum.com.br',
-        'files.tecnoblog.net'
+        "images.unsplash.com",
       ],
     },
 };
