@@ -85,3 +85,24 @@
   border: 1px solid #c62828;
   border-radius: 6px;
 }
+
+.instruction {
+  padding: 0.9rem 1rem;
+  background: #eef7ff;
+  border: 1px solid #cfe8ff;
+  color: #0b3d91;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.instruction a {
+  color: #0547a6;
+  text-decoration: underline;
+}
+
+@media (max-width: 520px) {
+  .instruction {
+    font-size: 0.9rem;
+  }
+}
