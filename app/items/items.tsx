@@ -1,40 +1,44 @@
-'use client'; // Necessário no Next.js para usar hooks
-import { useState, useEffect } from 'react';
+"use client"; // Required in Next.js to use hooks
+import { useState, useEffect } from "react";
 
 export default function ItemPage() {
-  // 1. Onde vamos guardar os dados
+  // 1. Where we store the data
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 2. O pedido (quando a página carrega)
+  // 2. The request (when the page loads)
   useEffect(() => {
     async function fetchItems() {
       try {
-        // 3. O "fetch" para o seu back-end (que está na porta 3000)
-        const response = await fetch('http://localhost:4000/items');
+        // 3. The "fetch" to your backend
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+        const response = await fetch(`${apiUrl}/items`);
         const data = await response.json();
-        setItems(data); // 4. Guarda os dados no estado
+        setItems(data); // 4. Save data to state
       } catch (error) {
-        console.error('Falha ao buscar usuários:', error);
+        console.error("Failed to fetch items:", error);
       } finally {
         setLoading(false);
       }
     }
 
     fetchItems();
-  }, []); // O array vazio [] significa "só rode uma vez"
+  }, []); // The empty array [] means "only run once"
 
   if (loading) {
     return <p>Carregando...</p>;
   }
 
-  // 5. Mostra os dados na tela
+  // 5. Render data on the screen
   return (
     <div>
       <h1>Lista de Itens</h1>
       <ul>
         {items.map((item: any) => (
-          <li key={item.id}>{item.name} ({item.email})</li>
+          <li key={item.id}>
+            {item.name} ({item.email})
+          </li>
         ))}
       </ul>
     </div>
