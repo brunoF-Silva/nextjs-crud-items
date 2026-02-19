@@ -20,7 +20,6 @@ export default function ItemsContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [statusMessage, setStatusMessage] = useState("");
-  const [showToast, setShowToast] = useState(false);
 
   const searchParams = useSearchParams();
 
@@ -28,12 +27,7 @@ export default function ItemsContent() {
     const status = searchParams.get("status");
     if (status === "deleted") {
       setStatusMessage("Item deleted successfully!");
-      setShowToast(true);
-      // Hide toast after 3s
-      setTimeout(() => {
-        setShowToast(false);
-        setStatusMessage("");
-      }, 3000);
+      setTimeout(() => setStatusMessage(""), 3000);
     }
   }, [searchParams]);
 
@@ -69,16 +63,7 @@ export default function ItemsContent() {
   return (
     <div>
       <h2 className={styles.title}>Available Items</h2>
-      {/* Inline status (fallback) */}
-      {statusMessage && !showToast && (
-        <div className={styles.statusMessage}>{statusMessage}</div>
-      )}
-      {/* Floating toast */}
-      {showToast && (
-        <div className={styles.toast} role="status" aria-live="polite">
-          {statusMessage}
-        </div>
-      )}
+      {statusMessage && <div className={styles.statusMessage}>{statusMessage}</div>}
       {loading && items.length > 0 && <p>Loading next page...</p>}
 
       <div className={styles.grid}>
