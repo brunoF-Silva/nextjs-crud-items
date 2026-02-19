@@ -107,7 +107,7 @@ export default function ClientsPage() {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Clients (sellers)</h2>
-      
+
       {statusMessage && (
         <div className={styles.statusMessage}>{statusMessage}</div>
       )}
@@ -123,40 +123,43 @@ export default function ClientsPage() {
           </tr>
         </thead>
         <tbody>
-          {/* Only show the table body if not loading */
-          !loading && users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name || 'N/A'}</td>
-              <td>{user.email}</td>
-              <td className={styles.actions}>
-                <Link 
-                  href={`/clients/${user.id}/edit`} 
-                  className={styles.buttonEdit}
-                >
-                  Edit
-                </Link>
-                <button 
-                  onClick={() => handleDelete(user.id)}
-                  className={styles.buttonDelete}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+          {
+            /* Only show the table body if not loading */
+            !loading &&
+              users.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.name || "N/A"}</td>
+                  <td>{user.email}</td>
+                  <td className={styles.actions}>
+                    <Link
+                      href={`/clients/${user.id}/edit`}
+                      className={styles.buttonEdit}
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className={styles.buttonDelete}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+          }
         </tbody>
       </table>
 
       {/* --- 8. Add Pagination UI --- */}
       <div className={styles.paginationControls}>
         <button onClick={handlePrevPage} disabled={currentPage <= 1}>
-          &larr; Anterior
+          &larr; Previous
         </button>
         <span>
-          Página {currentPage} de {totalPages}
+          Page {currentPage} of {totalPages}
         </span>
         <button onClick={handleNextPage} disabled={currentPage >= totalPages}>
-          Próxima &rarr;
+          Next &rarr;
         </button>
       </div>
     </div>

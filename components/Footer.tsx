@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <p>
-        &copy; {currentYear} MyApp. All rights reserved.
+        &copy; {currentYear} CRUD Items. All rights reserved.
       </p>
     </footer>
   );

@@ -13,7 +13,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
-          MyApp
+          CRUD Items
         </Link>
 
       <div className={styles.navActions}>

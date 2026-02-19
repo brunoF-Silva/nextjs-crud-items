@@ -61,19 +61,19 @@ export default function ItemPage() {
   };
 
   if (loading && items.length === 0) {
-    return <p>Carregando...</p>;
+    return <p>Loading...</p>;
   }
 
   return (
     <div>
-      <h2 className={styles.title}>Avaliable Items</h2>
+      <h2 className={styles.title}>Available Items</h2>
       {/* 2. Added the status message display here */}
       {statusMessage && (
         <div className={styles.statusMessage}>{statusMessage}</div>
       )}
 
       {/* Show a message if loading next page */}
-      {loading && items.length > 0 && <p>Carregando próxima página...</p>}
+      {loading && items.length > 0 && <p>Loading next page...</p>}
 
       <div className={styles.grid}>
         {items.map((item) => (
@@ -84,13 +84,13 @@ export default function ItemPage() {
       {/* Pagination buttons UI */}
       <div className={styles.paginationControls}>
         <button onClick={handlePrevPage} disabled={currentPage <= 1}>
-          &larr; Anterior
+          &larr; Previous
         </button>
         <span>
-          Página {currentPage} de {totalPages}
+          Page {currentPage} of {totalPages}
         </span>
         <button onClick={handleNextPage} disabled={currentPage >= totalPages}>
-          Próxima &rarr;
+          Next &rarr;
         </button>
       </div>
     </div>
