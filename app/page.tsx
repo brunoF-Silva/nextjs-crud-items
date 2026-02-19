@@ -1,9 +1,9 @@
-'use client';
+"use client";
 // 1. Added useSearchParams to the imports
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation'; 
-import ItemCard from '@/components/ItemCard';
-import styles from './page.module.css';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import ItemCard from "@/components/ItemCard";
+import styles from "./page.module.css";
 
 // Item type definition
 type Item = {
@@ -30,9 +30,10 @@ export default function ItemPage() {
     async function fetchItems() {
       setLoading(true);
       try {
-        const response = await fetch(
-          `http://localhost:4000/items?page=${currentPage}`,
-        );
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+        const response = await fetch(`${apiUrl}/items?page=${currentPage}`);
+
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
         }
@@ -41,7 +42,7 @@ export default function ItemPage() {
         setItems(data.data || data || []);
         setTotalPages(data.totalPages || 0);
       } catch (error) {
-        console.error("Falha ao buscar itens:", error);
+        console.error("Failed to fetch items:", error);
         setItems([]); // Ensure items is always an array
       } finally {
         setLoading(false);
