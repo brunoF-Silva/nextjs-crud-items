@@ -63,6 +63,27 @@
   margin-bottom: 1rem;
 }
 
+/* Floating toast for brief confirmations (delete / save) */
+.toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: #0b6b2f;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(11, 107, 47, 0.18);
+  z-index: 9999;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.toast.hide {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
 .title {
   /* Centering */
   text-align: center;
