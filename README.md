@@ -1,6 +1,3 @@
-Here is your content as **raw Markdown**, ready to paste into your `README.md`:
-
-````markdown
 # CRUD Items Frontend
 
 A modern, responsive frontend application built with Next.js for managing items and users. This project serves as the user interface for the [CRUD Items Backend API](https://github.com/brunoF-Silva/nestjs-crud-items), featuring dynamic routing, server-side rendering, and modern UX patterns.
@@ -32,7 +29,7 @@ A modern, responsive frontend application built with Next.js for managing items 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/brunoF-Silva/nextjs-crud-items.git
-   cd crud-items-front
+   cd nextjs-crud-items
    ```
 
 2. **Install dependencies**
@@ -112,4 +109,3 @@ src/
 └── styles/
     └── globals.css            # Global styles and Tailwind imports
 ```
-````
