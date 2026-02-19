@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Here is your content as **raw Markdown**, ready to paste into your `README.md`:
 
-## Getting Started
+````markdown
+# CRUD Items Frontend
 
-First, run the development server:
+A modern, responsive frontend application built with Next.js for managing items and users. This project serves as the user interface for the [CRUD Items Backend API](https://github.com/brunoF-Silva/nestjs-crud-items), featuring dynamic routing, server-side rendering, and modern UX patterns.
+
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **UI Library**: React 19
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS & CSS Modules
+- **Deployment**: [Vercel](https://vercel.com/)
+
+## ✨ Features
+
+- **Complete CRUD Interface**: Seamlessly create, read, update, and delete items and clients.
+- **Modern UX/UI**: Responsive design with loading states and pagination controls.
+- **Toast Notifications**: Floating, auto-dismissing toast alerts for successful user actions (e.g., deletions).
+- **Hybrid Rendering**: Strategic use of Server Components and Client Components for optimal performance.
+- **Environment-Aware**: Dynamically connects to local or production APIs using environment variables.
+
+## 📋 Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- A running instance of the [CRUD Items API](https://github.com/brunoF-Silva/nestjs-crud-items) (Local or Hosted)
+
+## 🛠️ Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/brunoF-Silva/nextjs-crud-items.git
+   cd crud-items-front
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   Create a `.env.local` file in the root directory to point to your backend API:
+
+   ```env
+   # Fallback is http://localhost:4000 if not provided
+   NEXT_PUBLIC_API_URL=http://localhost:4000
+   ```
+
+---
+
+## 🚀 Running the Application
+
+### Development Mode
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To test the optimized production build locally:
 
-## Learn More
+```bash
+npm run build
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ☁️ Deployment (Vercel)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This application is highly optimized for deployment on Vercel.
 
-## Deploy on Vercel
+1. Create a new Project on Vercel and import your GitHub repository.
+2. During the setup phase, expand the **Environment Variables** section.
+3. Add your production backend URL:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   - **Name**: `NEXT_PUBLIC_API_URL`
+   - **Value**: `https://your-backend-url.onrender.com`  
+     (Ensure there is no trailing slash `/`)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Click **Deploy**.
+
+---
+
+## 🏗️ Architecture Notes
+
+### React Suspense & CSR Bailout
+
+To ensure optimal static generation during the build process, components that rely on browser-specific hooks (like `useSearchParams`) are isolated into dedicated Client Components (e.g., `ItemsContent.tsx`). These are then wrapped in React `<Suspense>` boundaries within the Server Components (`page.tsx`) to prevent "CSR bailout" errors during Vercel deployments.
+
+---
+
+## 📊 Project Structure
+
+```plaintext
+src/
+├── app/
+│   ├── items/
+│   │   └── page.tsx           # Server wrapper for items
+│   ├── clients/
+│   │   └── page.tsx           # Server wrapper for clients
+│   └── page.tsx               # Main entry point
+├── components/
+│   ├── ItemCard.tsx           # Reusable UI components
+│   └── Header.tsx
+└── styles/
+    └── globals.css            # Global styles and Tailwind imports
+```
+````
