@@ -27,7 +27,7 @@ export default function ItemPage() {
   }, []); // The empty array [] means "only run once"
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <p>Loading...</p>;
   }
 
   // 5. Render data on the screen
