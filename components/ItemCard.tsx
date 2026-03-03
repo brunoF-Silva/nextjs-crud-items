@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image'; // Import the special Next.js Image component
 import styles from './ItemCard.module.css';
+import { formatUsaPrice, formatBrlPrice } from '../lib/utils';
 
 // Define the "shape" of the data our component expects.
 // This is based on your Prisma schema.
@@ -12,26 +13,6 @@ type ItemProps = {
   price: number;
   promoPrice?: number | null; // It can be number, null, or undefined
 };
-
-/**
- * A simple helper function to format a number into BRL currency.
- * e.g., 999.9 -> "R$ 999,90"
- */
-// function formatPrice(price: number) {
-//   return price.toLocaleString('pt-BR', {
-//     style: 'currency',
-//     currency: 'BRL',
-//   });
-// }
-function formatPrice(price: number) {
-  return Number(price).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}
-
 
 // Note: This is a Server Component (no 'use client')
 // We are just receiving props and displaying them.
@@ -67,12 +48,12 @@ export default function ItemCard({ item }: { item: ItemProps }) {
         {/* 3. The Price */}
         <div className={styles.priceContainer}>
           <span className={styles.price}>
-            {formatPrice(displayPrice)}
+            {formatUsaPrice(displayPrice)}
           </span>
           {/* Only show the original price if it exists (i.e., there's a promo) */}
           {originalPrice && (
             <del className={styles.originalPrice}>
-              {formatPrice(originalPrice)}
+              {formatUsaPrice(originalPrice)}
             </del>
           )}
         </div>

@@ -5,6 +5,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './itemDetail.module.css';
+import { formatUsaPrice, formatBrlPrice } from '../../../lib/utils';
 
 // 1. Define the types for the data we expect
 // We add the 'user' object here
@@ -22,14 +23,6 @@ type Item = {
   promoPrice?: number | null;
   user: User; // The included user object
 };
-
-// Helper function to format price (you can move this to a shared 'utils.ts' file)
-function formatPrice(price: number) {
-  return price.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  });
-}
 
 export default function ItemDetailPage() {
   const [item, setItem] = useState<Item | null>(null);
@@ -148,10 +141,10 @@ export default function ItemDetailPage() {
         <p className={styles.soldBy}>Sold by: {item.user.name}</p>
         
         <div className={styles.priceContainer}>
-          <span className={styles.price}>{formatPrice(displayPrice)}</span>
+          <span className={styles.price}>{formatUsaPrice(displayPrice)}</span>
           {originalPrice && (
             <del className={styles.originalPrice}>
-              {formatPrice(originalPrice)}
+              {formatUsaPrice(originalPrice)}
             </del>
           )}
         </div>
