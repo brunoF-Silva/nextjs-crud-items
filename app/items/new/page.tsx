@@ -1,69 +1,64 @@
-'use client'; // This is required because we use state (useState) and event handlers (onSubmit)
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Used to redirect after success
-import styles from './CreateItem.module.css'; // We will create this CSS file next
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./CreateItem.module.css";
 
-// This component will be rendered by Next.js when you visit /items/new
 export default function CreateItemPage() {
-  const router = useRouter(); // Initialize router to redirect
+  const router = useRouter();
 
-  // State for all our form fields
-  const [name, setName] = useState('');
-  const [shortDescription, setShortDescription] = useState('');
-  const [longDescription, setLongDescription] = useState('');
-  const [image, setImage] = useState('');
-  const [price, setPrice] = useState('');
-  const [promoPrice, setPromoPrice] = useState('');
-  const [userId, setUserId] = useState(''); // Assuming you'll hardcode or fetch this eventually
+  const [name, setName] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
+  const [longDescription, setLongDescription] = useState("");
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState("");
+  const [promoPrice, setPromoPrice] = useState("");
+  const [userId, setUserId] = useState("");
 
-  // State for handling errors from the API
   const [error, setError] = useState<string | null>(null);
 
-  // This function runs when the user clicks the submit button
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Stop the browser from refreshing the page
+    e.preventDefault();
+    setError(null); // Clear any previous errors
 
-    // 1. --- Prepare the Data ---
-    // Create the data object to send.
-    // We must convert strings from the form into numbers for our DTO.
     const itemData = {
       name,
       shortDescription,
       longDescription,
       image,
-      price: parseFloat(price), // Convert string "12.99" to number 12.99
-      userId: parseInt(userId, 10), // Convert string "1" to number 1
-      // Only include promoPrice if it's not empty
+      price: parseFloat(price),
+      userId: parseInt(userId, 10),
       ...(promoPrice && { promoPrice: parseFloat(promoPrice) }),
     };
 
-    // 2. --- Send the Data (POST Request) ---
     try {
-      const response = await fetch('http://localhost:4000/items', {
-        method: 'POST',
+      // Use the environment variable for the POST request
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const response = await fetch(`${apiUrl}/items`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(itemData),
       });
 
-      // 3. --- Handle the Response ---
       if (!response.ok) {
-        // If the server sends a 400 (validation error) or 500 (server error)
         const errorData = await response.json();
-        throw new Error(errorData.message.join(', ') || 'Failed to create item');
+        // Fallback to a generic message if the backend doesn't provide an array of messages
+        const errorMessage = Array.isArray(errorData.message)
+          ? errorData.message.join(", ")
+          : errorData.message || "Failed to create item";
+
+        throw new Error(errorMessage);
       }
 
-      // If successful, log the new item and redirect to the main items page
       const newItem = await response.json();
-      console.log('Item created successfully:', newItem);
-      alert('Item created successfully!');
-      router.push('/'); // Redirect to the items list page
-    
+      console.log("Item created successfully:", newItem);
+      alert("Item created successfully!");
+      router.push("/?status=created");
     } catch (err: any) {
       console.error(err);
-      setError(err.message); // Show the error message on the page
+      setError(err.message);
     }
   };
 
@@ -88,8 +83,6 @@ export default function CreateItemPage() {
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        
-        {/* Show an error message if the API request fails */}
         {error && (
           <div className={styles.errorBanner}>
             <strong>Error:</strong> {error}
@@ -97,7 +90,9 @@ export default function CreateItemPage() {
         )}
 
         <div className={styles.formGroup}>
-          <label htmlFor="name" className={styles.label}>Item Name</label>
+          <label htmlFor="name" className={styles.label}>
+            Item Name
+          </label>
           <input
             type="text"
             id="name"
@@ -109,7 +104,9 @@ export default function CreateItemPage() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="shortDescription" className={styles.label}>Short Description</label>
+          <label htmlFor="shortDescription" className={styles.label}>
+            Short Description
+          </label>
           <input
             type="text"
             id="shortDescription"
@@ -122,7 +119,9 @@ export default function CreateItemPage() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="longDescription" className={styles.label}>Long Description</label>
+          <label htmlFor="longDescription" className={styles.label}>
+            Long Description
+          </label>
           <textarea
             id="longDescription"
             className={styles.textarea}
@@ -133,7 +132,9 @@ export default function CreateItemPage() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="image" className={styles.label}>Image URL</label>
+          <label htmlFor="image" className={styles.label}>
+            Image URL
+          </label>
           <input
             type="text"
             id="image"
@@ -144,10 +145,11 @@ export default function CreateItemPage() {
           />
         </div>
 
-        {/* Group price fields together */}
         <div className={styles.priceGroup}>
           <div className={styles.formGroup}>
-            <label htmlFor="price" className={styles.label}>Price</label>
+            <label htmlFor="price" className={styles.label}>
+              Price
+            </label>
             <input
               type="number"
               id="price"
@@ -161,7 +163,9 @@ export default function CreateItemPage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="promoPrice" className={styles.label}>Promotional Price (Optional)</label>
+            <label htmlFor="promoPrice" className={styles.label}>
+              Promotional Price (Optional)
+            </label>
             <input
               type="number"
               id="promoPrice"
@@ -175,7 +179,9 @@ export default function CreateItemPage() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="userId" className={styles.label}>User ID</label>
+          <label htmlFor="userId" className={styles.label}>
+            User ID
+          </label>
           <input
             type="number"
             id="userId"

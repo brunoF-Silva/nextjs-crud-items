@@ -1,14 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import styles from './itemDetail.module.css';
-import { formatUsaPrice, formatBrlPrice } from '../../../lib/utils';
+import { useState, useEffect } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import styles from "./itemDetail.module.css";
+import { formatUsaPrice, formatBrlPrice } from "../../../lib/utils";
 
 // 1. Define the types for the data we expect
-// We add the 'user' object here
 type User = {
   name: string;
 };
@@ -21,98 +20,106 @@ type Item = {
   image: string;
   price: number;
   promoPrice?: number | null;
-  user: User; // The included user object
+  user: User;
 };
 
 export default function ItemDetailPage() {
   const [item, setItem] = useState<Item | null>(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(''); // For success/error messages
+  const [statusMessage, setStatusMessage] = useState("");
 
   // 2. Next.js hooks for dynamic routing
-  const params = useParams(); // Gets { id: '...' } from the URL
-  const router = useRouter(); // Used for redirecting
-  const searchParams = useSearchParams(); // Used for reading query params (e.g., ?status=updated)
+  const params = useParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const id = params.id;
 
   // 3. Fetch item data when the page loads
   useEffect(() => {
-    if (!id) return; // Don't fetch if id isn't ready
+    if (!id) return;
 
     async function fetchItem() {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:4000/items/${id}`);
+        // Use the environment variable for the GET request
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+        const res = await fetch(`${apiUrl}/items/${id}`);
+
         if (!res.ok) {
-          throw new Error('Item not found');
+          if (res.status === 404)
+            throw new Error("Item not found in the database");
+          throw new Error(`API error: ${res.status}`);
         }
+
         const data = await res.json();
         setItem(data);
       } catch (error) {
         console.error(error);
-        setStatusMessage('Error: Item not found.');
+        // Show the actual error message
+        setStatusMessage(
+          error instanceof Error ? error.message : "An unknown error occurred.",
+        );
       } finally {
         setLoading(false);
       }
     }
 
     fetchItem();
-  }, [id]); // Re-run if 'id' changes
+  }, [id]);
 
   // 4. Read the status message from the URL (e.g., after an edit)
   useEffect(() => {
-    const status = searchParams.get('status');
-    if (status === 'updated') {
-      setStatusMessage('Item updated successfully!');
-      // Optional: clear the message after a few seconds
-      setTimeout(() => setStatusMessage(''), 3000);
+    const status = searchParams.get("status");
+    if (status === "updated") {
+      setStatusMessage("Item updated successfully!");
+      setTimeout(() => setStatusMessage(""), 3000);
     }
   }, [searchParams]);
 
   // 5. Delete handler function
   const handleDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/items/${id}`, {
-        method: 'DELETE',
+      // Use the environment variable for the DELETE request
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const res = await fetch(`${apiUrl}/items/${id}`, {
+        method: "DELETE",
       });
 
       if (!res.ok) {
-        throw new Error('Failed to delete item');
+        throw new Error(`Failed to delete item: ${res.status}`);
       }
 
-      // Success! Redirect to the homepage with a status message
-      // We can't stay on this page, as the item is gone.
-      router.push('/?status=deleted');
+      router.push("/?status=deleted");
     } catch (error) {
       console.error(error);
-      setStatusMessage('Error: Failed to delete item.');
-      setShowDeleteModal(false); // Close modal on error
+      setStatusMessage("Error: Failed to connect to server to delete item.");
+      setShowDeleteModal(false);
     }
   };
 
-  // --- Render logic ---
   if (loading) return <p>Loading...</p>;
-  if (!item) return <p>{statusMessage || 'Item not found.'}</p>;
+  if (!item) return <p>{statusMessage || "Item not found."}</p>;
 
-  // Price logic from your ItemCard
   const hasPromo = item.promoPrice != null && item.promoPrice > 0;
   const displayPrice = hasPromo ? item.promoPrice! : item.price;
   const originalPrice = hasPromo ? item.price : null;
 
   return (
     <div className={styles.container}>
-      {/* 6. Status Message (for updates or errors) */}
       {statusMessage && (
         <div className={styles.statusMessage}>{statusMessage}</div>
       )}
 
-      {/* 7. The Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h2>Confirm Deletion</h2>
-            <p>Are you sure you want to delete "{item.name}"? This action cannot be undone.</p>
+            <p>
+              Are you sure you want to delete "{item.name}"? This action cannot
+              be undone.
+            </p>
             <div className={styles.modalActions}>
               <button
                 onClick={() => setShowDeleteModal(false)}
@@ -120,10 +127,7 @@ export default function ItemDetailPage() {
               >
                 Cancel
               </button>
-              <button
-                onClick={handleDelete}
-                className={styles.buttonDelete}
-              >
+              <button onClick={handleDelete} className={styles.buttonDelete}>
                 Delete
               </button>
             </div>
@@ -131,7 +135,6 @@ export default function ItemDetailPage() {
         </div>
       )}
 
-      {/* 8. Main Item Content */}
       <div className={styles.imageWrapper}>
         <Image src={item.image} alt={item.name} fill className={styles.image} />
       </div>
@@ -139,8 +142,9 @@ export default function ItemDetailPage() {
       <div className={styles.content}>
         <h1 className={styles.title}>{item.name}</h1>
         <p className={styles.soldBy}>Sold by: {item.user.name}</p>
-        
+
         <div className={styles.priceContainer}>
+          {/* Using the USA price formatter */}
           <span className={styles.price}>{formatUsaPrice(displayPrice)}</span>
           {originalPrice && (
             <del className={styles.originalPrice}>
@@ -148,11 +152,10 @@ export default function ItemDetailPage() {
             </del>
           )}
         </div>
-        
+
         <h3 className={styles.sectionTitle}>Description</h3>
         <p className={styles.longDescription}>{item.longDescription}</p>
 
-        {/* 9. Action Buttons */}
         <div className={styles.actions}>
           <Link href={`/items/${id}/edit`} className={styles.buttonPrimary}>
             Edit Item
