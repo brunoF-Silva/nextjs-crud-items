@@ -25,19 +25,28 @@ export default function EditClientPage() {
     async function fetchUser() {
       try {
         setLoading(true);
-        // Use environment variable for the GET request
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
         const res = await fetch(`${apiUrl}/users/${id}`);
 
-        if (!res.ok) throw new Error("Client not found");
+        if (!res.ok) {
+          if (res.status === 404)
+            throw new Error("Client not found in database");
+          throw new Error(`API error: ${res.status}`);
+        }
         const data = await res.json();
         setFormData({
           name: data.name,
           email: data.email,
         });
-      } catch (err) {
-        setError("Failed to load client data.");
+      } catch (err: any) {
+        console.error(err);
+        // THE FIX: Stop masking the error! Show the real reason it failed.
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Network error: Is the backend running?",
+        );
       } finally {
         setLoading(false);
       }
@@ -45,7 +54,6 @@ export default function EditClientPage() {
     fetchUser();
   }, [id]);
 
-  // 2. Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -54,14 +62,12 @@ export default function EditClientPage() {
     }));
   };
 
-  // 3. Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError("");
 
     try {
-      // Use environment variable for the PATCH request
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
       const res = await fetch(`${apiUrl}/users/${id}`, {
         method: "PATCH",
@@ -76,6 +82,7 @@ export default function EditClientPage() {
 
       router.push("/clients?status=updated");
     } catch (err: any) {
+      console.error(err);
       setError(err.message);
       setSubmitting(false);
     }

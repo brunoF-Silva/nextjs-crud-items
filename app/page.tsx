@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import ItemsContent from "./ItemsContent";
 
-// THE FIX: This single line tells Vercel to NEVER cache this page.
-// It guarantees the page fetches fresh data from your NestJS backend on every single reload.
+// This single line tells Vercel to NEVER cache this page.
+// It guarantees the page fetches fresh data from my NestJS backend on every single reload.
 export const dynamic = "force-dynamic";
 
 export default function ItemPage() {

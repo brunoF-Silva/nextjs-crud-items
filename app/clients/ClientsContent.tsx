@@ -36,7 +36,10 @@ export default function ClientsContent() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/users?page=${currentPage}`);
+      // Use environment variable for the GET request
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const res = await fetch(`${apiUrl}/users?page=${currentPage}`);
+
       if (!res.ok) throw new Error("Failed to fetch users");
       const data = await res.json();
       setUsers(data.data || data || []);
@@ -60,7 +63,10 @@ export default function ClientsContent() {
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/users/${id}`, { method: "DELETE" });
+      // Use environment variable for the DELETE request
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const res = await fetch(`${apiUrl}/users/${id}`, { method: "DELETE" });
+
       if (!res.ok) throw new Error("Failed to delete");
 
       setStatusMessage("Client deleted successfully!");
@@ -86,7 +92,9 @@ export default function ClientsContent() {
     <div className={styles.container}>
       <h2 className={styles.title}>Clients (sellers)</h2>
 
-      {statusMessage && <div className={styles.statusMessage}>{statusMessage}</div>}
+      {statusMessage && (
+        <div className={styles.statusMessage}>{statusMessage}</div>
+      )}
 
       {loading && <p>Loading...</p>}
 
@@ -105,10 +113,16 @@ export default function ClientsContent() {
                 <td>{user.name || "N/A"}</td>
                 <td>{user.email}</td>
                 <td className={styles.actions}>
-                  <Link href={`/clients/${user.id}/edit`} className={styles.buttonEdit}>
+                  <Link
+                    href={`/clients/${user.id}/edit`}
+                    className={styles.buttonEdit}
+                  >
                     Edit
                   </Link>
-                  <button onClick={() => handleDelete(user.id)} className={styles.buttonDelete}>
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    className={styles.buttonDelete}
+                  >
                     Delete
                   </button>
                 </td>

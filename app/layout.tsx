@@ -31,17 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* 2. Add your Header here */}
         <Header />
 
-        {/* We wrap 'children' in a 'main' tag for semantics
-          and to add some consistent padding. 
-        */}
         <main style={{ minHeight: '80vh', padding: '0 1rem', maxWidth: '1100px', margin: '2rem auto' }}>
-          {children} {/* 'children' is where your page.tsx will be rendered */}
+          {children}
         </main>
         
-        {/* 3. Add your Footer here */}
         <Footer />
       </body>
     </html>

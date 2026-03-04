@@ -23,7 +23,7 @@
   }
 }
 
-/* ... (your .grid styles) ... */
+/* ... (.grid styles) ... */
 
 .paginationControls {
   display: flex;
@@ -52,7 +52,7 @@
   cursor: not-allowed;
 }
 
-/* ... (your existing .grid and .paginationControls styles) ... */
+/* ... (existing .grid and .paginationControls styles) ... */
 
 .statusMessage {
   padding: 1rem;
