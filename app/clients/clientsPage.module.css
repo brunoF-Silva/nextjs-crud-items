@@ -64,7 +64,7 @@
   margin-bottom: 1rem;
 }
 
-/* ... (your existing styles for .container, .clientsTable, .buttonEdit, etc.) ... */
+/* ... (existing styles for .container, .clientsTable, .buttonEdit, etc.) ... */
 
 .paginationControls {
   display: flex;

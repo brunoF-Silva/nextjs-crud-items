@@ -4,7 +4,7 @@ import styles from './ItemCard.module.css';
 import { formatUsaPrice, formatBrlPrice } from '../lib/utils';
 
 // Define the "shape" of the data our component expects.
-// This is based on your Prisma schema.
+// This is based on my Prisma schema.
 type ItemProps = {
   id: number;
   name: string;

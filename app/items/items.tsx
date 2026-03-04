@@ -10,7 +10,7 @@ export default function ItemPage() {
   useEffect(() => {
     async function fetchItems() {
       try {
-        // 3. The "fetch" to your backend
+        // 3. The "fetch" to my backend
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
         const response = await fetch(`${apiUrl}/items`);
