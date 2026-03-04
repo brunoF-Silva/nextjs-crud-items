@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import styles from './editPage.module.css';
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import styles from "./editPage.module.css";
 
-// We can reuse the same Item type, but make fields optional for the form
 type ItemFormData = {
   name?: string;
   shortDescription?: string;
@@ -12,14 +11,13 @@ type ItemFormData = {
   image?: string;
   price?: number;
   promoPrice?: number | null;
-  // We don't include userId, as it's not editable here
 };
 
 export default function EditItemPage() {
   const [formData, setFormData] = useState<ItemFormData>({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(''); // For edit failure messages
+  const [error, setError] = useState("");
 
   const params = useParams();
   const router = useRouter();
@@ -31,21 +29,34 @@ export default function EditItemPage() {
     async function fetchItem() {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:4000/items/${id}`);
-        if (!res.ok) throw new Error('Item not found');
+        // Use environment variable for the GET request
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+        const res = await fetch(`${apiUrl}/items/${id}`);
+
+        if (!res.ok) {
+          if (res.status === 404) throw new Error("Item not found in database");
+          throw new Error(`API error: ${res.status}`);
+        }
+
         const data = await res.json();
-        
-        // Set form data with only the fields we want to edit
+
         setFormData({
           name: data.name,
           shortDescription: data.shortDescription,
           longDescription: data.longDescription,
           image: data.image,
-          price: parseFloat(data.price), // Prisma returns Decimal as string
+          price: parseFloat(data.price),
           promoPrice: data.promoPrice ? parseFloat(data.promoPrice) : null,
         });
-      } catch (err) {
-        setError('Failed to load item data.');
+      } catch (err: any) {
+        console.error(err);
+        // Stop masking the error so you can see what actually failed
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Network error: Is the backend running?",
+        );
       } finally {
         setLoading(false);
       }
@@ -60,7 +71,7 @@ export default function EditItemPage() {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'number' ? parseFloat(value) || 0 : value,
+      [name]: type === "number" ? parseFloat(value) || 0 : value,
     }));
   };
 
@@ -68,25 +79,25 @@ export default function EditItemPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setError(''); // Clear previous errors
+    setError("");
 
     try {
-      const res = await fetch(`http://localhost:4000/items/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+      // Use environment variable for the PATCH request
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const res = await fetch(`${apiUrl}/items/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || 'Failed to update item');
+        throw new Error(errorData.message || "Failed to update item");
       }
 
       // Success! Redirect back to the details page with a status message
       router.push(`/items/${id}?status=updated`);
-
     } catch (err: any) {
-      // Stay on this page and show the error
       setError(err.message);
       setSubmitting(false);
     }
@@ -99,7 +110,6 @@ export default function EditItemPage() {
       <h1>Edit Item: {formData.name}</h1>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        {/* Show edit failure message */}
         {error && <div className={styles.errorMessage}>{error}</div>}
 
         <div className={styles.formGroup}>
@@ -108,18 +118,18 @@ export default function EditItemPage() {
             type="text"
             id="name"
             name="name"
-            value={formData.name || ''}
+            value={formData.name || ""}
             onChange={handleChange}
             required
           />
         </div>
-        
+
         <div className={styles.formGroup}>
           <label htmlFor="shortDescription">Short Description</label>
           <textarea
             id="shortDescription"
             name="shortDescription"
-            value={formData.shortDescription || ''}
+            value={formData.shortDescription || ""}
             onChange={handleChange}
             rows={3}
             required
@@ -131,7 +141,7 @@ export default function EditItemPage() {
           <textarea
             id="longDescription"
             name="longDescription"
-            value={formData.longDescription || ''}
+            value={formData.longDescription || ""}
             onChange={handleChange}
             rows={6}
             required
@@ -144,7 +154,7 @@ export default function EditItemPage() {
             type="text"
             id="image"
             name="image"
-            value={formData.image || ''}
+            value={formData.image || ""}
             onChange={handleChange}
             required
           />
@@ -170,14 +180,18 @@ export default function EditItemPage() {
               id="promoPrice"
               name="promoPrice"
               step="0.01"
-              value={formData.promoPrice || ''}
+              value={formData.promoPrice || ""}
               onChange={handleChange}
             />
           </div>
         </div>
 
-        <button type="submit" disabled={submitting} className={styles.submitButton}>
-          {submitting ? 'Saving...' : 'Save Changes'}
+        <button
+          type="submit"
+          disabled={submitting}
+          className={styles.submitButton}
+        >
+          {submitting ? "Saving..." : "Save Changes"}
         </button>
       </form>
     </div>
