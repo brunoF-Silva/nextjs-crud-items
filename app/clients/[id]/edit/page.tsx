@@ -25,8 +25,8 @@ export default function EditClientPage() {
     async function fetchUser() {
       try {
         setLoading(true);
-        const apiUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+        // Use environment variable for the GET request
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
         const res = await fetch(`${apiUrl}/users/${id}`);
 
         if (!res.ok) {
@@ -68,6 +68,7 @@ export default function EditClientPage() {
     setError("");
 
     try {
+      // Use environment variable for the PATCH request
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
       const res = await fetch(`${apiUrl}/users/${id}`, {
         method: "PATCH",
